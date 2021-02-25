@@ -8,6 +8,7 @@ type Product struct {
 	id                string
 	state             State
 	uncommittedEvents []Event
+	allEvents         []Event
 }
 
 func NewProduct(id string) Product {
@@ -17,8 +18,13 @@ func NewProduct(id string) Product {
 	}
 }
 
-func (p *Product) addEvent(event Event) {
+func (p *Product) ApplyEvent(event Event) {
 	event.Apply(p)
+	p.allEvents = append(p.allEvents, event)
+}
+
+func (p *Product) addEvent(event Event) {
+	p.ApplyEvent(event)
 	p.uncommittedEvents = append(p.uncommittedEvents, event)
 }
 
