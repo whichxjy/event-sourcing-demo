@@ -45,3 +45,15 @@ func (p *Product) ShipProduct(quantity int) {
 		Quantity: quantity,
 	})
 }
+
+func (p *Product) GetUncommittedEvents() []Event {
+	return append([]Event(nil), p.uncommittedEvents...)
+}
+
+func (p *Product) GetAllEvents() []Event {
+	return append([]Event(nil), p.allEvents...)
+}
+
+func (p *Product) EventsCommitted() {
+	p.uncommittedEvents = nil
+}
