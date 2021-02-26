@@ -10,7 +10,7 @@ type ProductReceivedEvent struct {
 }
 
 func (e ProductReceivedEvent) Apply(product *Product) {
-	e.Quantity += e.Quantity
+	product.state.QuantityOnHand += e.Quantity
 }
 
 type ProductShippedEvent struct {
@@ -19,5 +19,5 @@ type ProductShippedEvent struct {
 }
 
 func (e ProductShippedEvent) Apply(product *Product) {
-	e.Quantity -= e.Quantity
+	product.state.QuantityOnHand -= e.Quantity
 }

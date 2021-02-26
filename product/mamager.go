@@ -1,11 +1,22 @@
 package product
 
-type ProductManager struct {
+type productManager struct {
 	// product id => stream
 	streams map[string]*Stream
 }
 
-func (pm *ProductManager) Get(id string) Product {
+var pm *productManager
+
+func GetProductManager() *productManager {
+	if pm == nil {
+		pm = &productManager{
+			streams: make(map[string]*Stream),
+		}
+	}
+	return pm
+}
+
+func (pm *productManager) Get(id string) Product {
 	product := NewProduct(id)
 
 	if stream, ok := pm.streams[id]; ok {
@@ -17,7 +28,7 @@ func (pm *ProductManager) Get(id string) Product {
 	return product
 }
 
-func (pm *ProductManager) Save(product Product) {
+func (pm *productManager) Save(product Product) {
 	if stream, ok := pm.streams[product.id]; !ok || stream == nil {
 		pm.streams[product.id] = &Stream{}
 	}

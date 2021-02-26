@@ -23,13 +23,13 @@ func (p *Product) ApplyEvent(event Event) {
 	p.allEvents = append(p.allEvents, event)
 }
 
-func (p *Product) addEvent(event Event) {
+func (p *Product) addUncommittedEvent(event Event) {
 	p.ApplyEvent(event)
 	p.uncommittedEvents = append(p.uncommittedEvents, event)
 }
 
 func (p *Product) ReceiveProduct(quantity int) {
-	p.addEvent(ProductReceivedEvent{
+	p.addUncommittedEvent(ProductReceivedEvent{
 		ID:       p.id,
 		Quantity: quantity,
 	})
@@ -40,7 +40,7 @@ func (p *Product) ShipProduct(quantity int) {
 		panic("Not enough product to ship")
 	}
 
-	p.addEvent(ProductShippedEvent{
+	p.addUncommittedEvent(ProductShippedEvent{
 		ID:       p.id,
 		Quantity: quantity,
 	})
